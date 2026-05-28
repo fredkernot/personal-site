@@ -1,0 +1,35 @@
+---
+// src/pages/projects/index.astro
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+
+const projects = await getCollection('projects');
+
+projects.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout title="Projects | Fred Kernot">
+  <h1>Projects</h1>
+
+  <div class="project-list">
+    {projects.map((project) => (
+      <ProjectCard
+        title={project.data.title}
+        description={project.data.description}
+        date={project.data.date}
+        tech={project.data.tech}
+        url={`/projects/${project.id}`}
+      />
+    ))}
+  </div>
+</BaseLayout>
+
+<style>
+  .project-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+</style>

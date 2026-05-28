@@ -1,0 +1,17 @@
+---
+// src/components/Footer.astro
+const currentYear = new Date().getFullYear();
+---
+<footer>
+  <p>Frederick Kernot &copy; {currentYear}</p>
+</footer>
+
+<style>
+  footer {
+    margin-top: auto;
+    padding: 2rem 0;
+    border-top: 1px solid #eee;
+    font-size: 0.9rem;
+    color: #666;
+  }
+</style>

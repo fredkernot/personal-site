@@ -1,0 +1,83 @@
+---
+// src/components/ProjectCard.astro
+const { title, description, url, date, tech = [] } = Astro.props;  // ← added tech
+
+const formattedDate = date.toLocaleDateString('en-GB', {
+  year: 'numeric',
+  month: 'long',
+});
+---
+
+<a href={url} class="card">
+  <!-- Flex row: title block on the left, tags pushed to the right. -->
+  <div class="card-head">
+    <div class="card-title">
+      <h2>{title}</h2>
+      <p class="date">{formattedDate}</p>
+    </div>
+
+    {tech.length > 0 && (
+      <ul class="tags">
+        {tech.map((item: string) => <li>{item}</li>)}
+      </ul>
+    )}
+  </div>
+
+  <p class="desc">{description}</p>
+</a>
+
+<style>
+  .card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 1.25rem;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .card:hover {
+    border-color: #0076ff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .card-head {
+    display: flex;
+    justify-content: space-between;  /* title left, tags right */
+    align-items: flex-start;         /* tags hug the top */
+    gap: 1rem;
+  }
+  .card h2 {
+    margin: 0 0 0.25rem;
+    font-size: 1.2rem;
+  }
+  .date {
+    color: #666;
+    font-size: 0.85rem;
+    margin: 0;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;  /* multiple tags align to the right edge */
+    gap: 0.4rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-shrink: 0;             /* stop the tags being squashed by a long title */
+  }
+  .tags li {
+    background: #eef2f7;
+    color: #334;
+    font-size: 0.75rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+
+  .desc {
+    margin: 0.75rem 0 0;
+    color: #444;
+  }
+</style>

@@ -1,0 +1,71 @@
+---
+// src/layouts/ProjectLayout.astro
+import BaseLayout from './BaseLayout.astro';
+
+const { title, date, tech = [] } = Astro.props;
+
+const formattedDate = date.toLocaleDateString('en-GB', {
+  year: 'numeric',
+  month: 'long',
+});
+---
+
+<BaseLayout title={`${title} | Fred Kernot`}>
+  <a href="/projects" class="back-link">&larr; Back to projects</a>
+
+  <header class="project-header">
+    <h1>{title}</h1>
+    <p class="date">{formattedDate}</p>
+
+    {tech.length > 0 && (
+      <ul class="tags">
+        {tech.map((item: string) => <li>{item}</li>)}
+      </ul>
+    )}
+  </header>
+
+  <article>
+    <slot />
+  </article>
+</BaseLayout>
+
+<style>
+  .back-link {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    color: #666;
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+  .back-link:hover {
+    color: #0076ff;
+  }
+  .project-header {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 1rem;
+  }
+  .project-header h1 {
+    margin-bottom: 0.25rem;
+  }
+  .date {
+    color: #666;
+    font-size: 0.9rem;
+    margin: 0 0 0.75rem;
+  }
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .tags li {
+    background: #eef2f7;
+    color: #334;
+    font-size: 0.8rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+  }
+</style>
