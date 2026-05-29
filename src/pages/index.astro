@@ -1,9 +1,152 @@
 ---
 // src/pages/index.astro
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+// The bio lives here as real text — it's the SEO/no-JS fallback.
+// The script below re-streams it for the "LLM output" effect.
+const bio = "Final-year BSc Computer Science student at the University of Surrey, predicted First Class and graduating July 2026. I train cooperative multi-agent AI, fine-tune and evaluate large language models, build full-stack applications, and run a home server I rebuilt from two broken laptops. Open to software engineering, AI and DevOps roles from September 2026.";
 ---
 
-<BaseLayout title="Home | Fred Kernot">
-  <h1>Welcome to my personal website</h1>
-  <p>This content is being injected directly into the BaseLayout's slot!</p>
+<BaseLayout title="Fred Kernot — CS · AI · Systems">
+  <section class="hero">
+    <h1>Fred Kernot</h1>
+
+    <!-- The streamed answer. Full text is here as a fallback. -->
+    <p class="bio" id="bio">{bio}</p>
+
+    <!-- Fake "local LLM" stats — hidden until streaming finishes. -->
+    <p class="stats" id="stats" hidden>
+      <span class="model">fred-1.0</span>
+      <span id="tok"></span> · 41.2 tok/s · 0.18s to first token
+    </p>
+  </section>
+
+  <!-- Calls to action -->
+  <nav class="cta" aria-label="Site sections">
+    <a href="/projects">
+      <span class="cta-title">Projects</span>
+      <span class="cta-sub">What I've built</span>
+    </a>
+    <a href="/cv">
+      <span class="cta-title">CV</span>
+      <span class="cta-sub">Experience &amp; skills</span>
+    </a>
+    <a href="/personal">
+      <span class="cta-title">Personal</span>
+      <span class="cta-sub">Beyond the code</span>
+    </a>
+  </nav>
+
+  <p class="secondary">
+    <a href="https://github.com/fredkernot">GitHub</a> ·
+    <a href="https://linkedin.com/in/fred-kernot">LinkedIn</a>
+  </p>
 </BaseLayout>
+
+<script>
+  const bioEl = document.getElementById('bio');
+  const statsEl = document.getElementById('stats');
+  const tokEl = document.getElementById('tok');
+
+  const full = bioEl.textContent.trim();
+  // Treat each word as a pseudo-token for a plausible count.
+  const tokenCount = full.split(/\s+/).length;
+  tokEl.textContent = tokenCount + ' tokens';
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Reveal the full text + stats instantly (used on finish, skip, or reduced motion).
+  function finish() {
+    bioEl.textContent = full;
+    statsEl.hidden = false;
+  }
+
+  if (reduceMotion) {
+    finish();
+  } else {
+    const words = full.split(' ');
+    bioEl.textContent = '';
+    bioEl.classList.add('typing');   // adds the blinking cursor via CSS
+    let i = 0;
+    const timer = setInterval(() => {
+      bioEl.textContent = words.slice(0, i + 1).join(' ');
+      i++;
+      if (i >= words.length) {
+        clearInterval(timer);
+        bioEl.classList.remove('typing');
+        statsEl.hidden = false;
+      }
+    }, 55);
+
+    // Click anywhere on the bio to skip to the end.
+    bioEl.addEventListener('click', () => { clearInterval(timer); bioEl.classList.remove('typing'); finish(); });
+  }
+</script>
+
+<style>
+  .hero { padding: 1rem 0 2rem; }
+  .hero h1 { font-size: 2rem; margin: 0 0 1rem; }
+
+  .bio {
+    font-size: 1.25rem;
+    line-height: 1.6;
+    max-width: 38ch;       /* keeps a readable line length */
+    margin: 0;
+    min-height: 4.8em;     /* reserves space so layout doesn't jump while typing */
+  }
+  /* Blinking cursor while streaming. */
+  .bio.typing::after {
+    content: '';
+    display: inline-block;
+    width: 0.5ch;
+    height: 1.1em;
+    background: #0076ff;
+    margin-left: 2px;
+    vertical-align: -0.15em;
+    animation: blink 1s steps(1) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .stats {
+    font-family: ui-monospace, monospace;
+    font-size: 0.8rem;
+    color: #888;
+    margin: 1rem 0 0;
+  }
+  .stats .model {
+    color: #0076ff;
+    margin-right: 0.5rem;
+  }
+
+  .cta {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin: 2.5rem 0 1.5rem;
+  }
+  .cta a {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 1rem;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .cta a:hover {
+    border-color: #0076ff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  .cta-title { font-weight: 600; }
+  .cta-sub { font-size: 0.85rem; color: #666; }
+
+  .secondary { font-size: 0.9rem; color: #666; }
+  .secondary a { color: #0076ff; text-decoration: none; }
+  .secondary a:hover { text-decoration: underline; }
+
+  @media (max-width: 600px) {
+    .cta { grid-template-columns: 1fr; }
+  }
+</style>

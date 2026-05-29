@@ -1,10 +1,194 @@
+<!-- TODO: Refactor projects so they take the description from the actual project write up (___.md file).-->
+
 ---
 // src/pages/cv.astro
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+const skillGroups = [
+  { label: "Languages", items: "Python, Java, C, C++, JavaScript, SQL, CUDA C/C++, Bash" },
+  { label: "AI & ML", items: "PyTorch, HuggingFace, scikit-learn, torchvision, Stable-Baselines3, Gymnasium, CNNs, computer vision (YOLO11, Depth Anything V2), reinforcement learning, NLP, RAG, LoRA, NSGA-II, model evaluation (ROC, AUPR, F1), hyperparameter tuning" },
+  { label: "Data", items: "pandas, Matplotlib, SQL, data cleaning & quality, large-dataset analysis, data augmentation, Excel" },
+  { label: "Infrastructure & DevOps", items: "Linux, Docker, CI/CD, Git, SSH, parallel & GPU computing (NVIDIA A100)" },
+  { label: "Web & Software Engineering", items: "Django, React, REST APIs, full-stack development, Agile, automated testing, debugging, code reviews, OOP, functional programming" },
+  { label: "Security", items: "cryptography & cryptanalysis (RSA / Coppersmith, Shamir Secret Sharing), web security, authentication, ethical hacking & penetration testing" },
+];
+
+const projects = [
+  {
+    title: "Adversarial Reinforcement Learning for Cooperative AI — Dissertation",
+    stack: "Python · PyTorch · Stable-Baselines3 · Gymnasium · Overcooked-AI",
+    desc: "Built a three-stage co-evolutionary RL pipeline (40M timesteps) training cooperative agents to stay effective alongside imperfect or adversarial partners in Overcooked-AI. Evaluated across three seeds with a compute-matched ablation study, quantifying a 2–3× improvement over the self-play baseline and isolating which stages drove the gains.",
+  },
+  {
+    title: "LLM Optimisation & Evaluation",
+    stack: "Python · HuggingFace · NSGA-II · LoRA · GPU (A100)",
+    desc: "Implemented NSGA-II for multi-objective hyperparameter optimisation of an LLM, balancing validation accuracy against trainable parameter count. Analysed the resulting Pareto front to find a deployment configuration that cut parameters by 55.5% with matched accuracy.",
+  },
+  {
+    title: "Assistive AI for Visually Impaired Users",
+    stack: "Python · YOLO11 · Depth Anything V2 · Computer Vision · COCO",
+    desc: "Prototype assistive-vision system that processes camera or webcam frames through a multi-stage pipeline: detects accessibility-relevant objects with a fine-tuned YOLO11 model, estimates proximity with Depth Anything V2, scores risk, and outputs text-to-speech alerts plus annotated logs. Configurable via YAML, with evaluation scripts benchmarking model sizes on COCO and custom obstacle datasets.",
+  },
+  {
+    title: "Conversational Crime Data Platform",
+    stack: "Python · pandas · Ollama · Local LLMs",
+    desc: "Local RAG tool that melts and pre-aggregates large public London crime datasets with pandas to make lookups near-constant-time. Cut local-LLM hallucinations during conversational retrieval through regex-based entity extraction and precise context prompting.",
+  },
+  {
+    title: "Accessible Cybersecurity Education Platform",
+    stack: "Django · React · Docker · JWT · Agile",
+    desc: "Led a 7-person Agile team to design, build and deploy a containerised e-learning platform, standardising Git workflows, group code reviews and automated testing. Built the React frontend with secure JWT auth and RESTful endpoints, and accessible high-contrast UIs tailored to an elderly demographic.",
+  },
+  {
+    title: "Home Server & Automation",
+    href: "/projects/home-server",        
+    stack: "Linux · Docker · SSH · CI/CD concepts",
+    desc: "Rebuilt one working machine from two scrap HP laptops, installed Linux Mint, and run it as a headless, Docker-based home server over SSH. Full setup documented as a rebuild/recovery runbook, including a layer-by-layer network debugging write-up.",
+  },
+];
+
+const experience = [
+  { role: "Agency Staff", org: "Host Staffing", dates: "Jun 2022 – Present", desc: "Delivered high-standard hospitality for clients including KPMG and Microsoft in fast-paced environments, with consistent reliability under pressure." },
+  { role: "Administrative Assistant", org: "Expert Tuition", dates: "Oct 2021 – Jan 2022", desc: "Organised 500+ exam papers into a structured folder hierarchy, improving access and demonstrating strong organisation." },
+  { role: "Project Assistant", org: "Heptagon Capital", dates: "Aug 2021", desc: "Pulled and analysed financial metrics across 10+ companies' annual reports to support investment decisions; early exposure to a regulated finance environment." },
+  { role: "Barista", org: "Ole & Steen", dates: "Jun 2021 – Jun 2022", desc: "Provided high-quality customer service in a busy café setting, demonstrating reliability and teamwork." },
+];
 ---
 
 <BaseLayout title="CV | Fred Kernot">
-  <h1>Curriculum Vitae</h1>
-  <p>This is where my professional experience, skills, and education will live.</p>
-  <p><em>Stub page - content coming soon!</em></p>
+  <header class="cv-head">
+    <h1>Frederick Kernot</h1>
+    <p class="contact">
+      London, UK ·
+      <a href="https://github.com/fredkernot">GitHub</a> ·
+      <a href="https://linkedin.com/in/fred-kernot">LinkedIn</a> ·
+      Full right to work in UK &amp; EU
+    </p>
+    <!-- Links to the PDF you drop in public/ as Frederick_Kernot_CV.pdf -->
+    <a class="download" href="/Frederick_Kernot_CV.pdf" download>Download CV (PDF)</a>
+  </header>
+
+  <section>
+    <h2>Summary</h2>
+    <p>
+      Final-year BSc Computer Science student at the University of Surrey
+      (predicted First Class), graduating July 2026 and available from September.
+      A strong Python developer with applied experience spanning AI/ML, full-stack
+      development and Linux infrastructure — from fine-tuning and evaluating LLMs to
+      building and self-hosting containerised services. Comfortable across the
+      engineering lifecycle: Git, automated testing, code review, CI/CD and Agile.
+    </p>
+  </section>
+
+  <section>
+    <h2>Skills</h2>
+    <dl class="skills">
+      {skillGroups.map((group) => (
+        <div class="skill-row">
+          <dt>{group.label}</dt>
+          <dd>{group.items}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+
+  <section>
+    <h2>Projects</h2>
+    {projects.map((project) => (
+      <div class="entry">
+        <h3>
+          {project.href
+            ? <a href={project.href}>{project.title}</a>
+            : project.title}
+        </h3>
+        <p class="meta">{project.stack}</p>
+        <p>{project.desc}</p>
+      </div>
+    ))}
+  </section>
+
+  <section>
+    <h2>Education</h2>
+
+    <div class="entry">
+      <h3>University of Surrey — BSc (Hons) Computer Science</h3>
+      <p class="meta">Sept 2023 – July 2026 · Guildford, UK · Predicted First Class</p>
+    </div>
+
+    <div class="entry">
+      <h3>Prior Qualifications</h3>
+      <p>
+        Access to HE Diploma in Computing: Distinction (45 credits at Distinction,
+        15 at Pass). <br> A-Levels: Mathematics (A), Physics (B), Economics (C).
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Experience</h2>
+    {experience.map((job) => (
+      <div class="entry">
+        <h3>{job.role} — {job.org}</h3>
+        <p class="meta">{job.dates}</p>
+        <p>{job.desc}</p>
+      </div>
+    ))}
+  </section>
+
+  <section>
+    <h2>Extras</h2>
+    <ul>
+      <li>Mount Kilimanjaro Climb (Aug 2025): Raised £3,000 for Dig Deep (clean water charity), supporting communitiesin Kenya, demonstrating sustained personal commitment.</li>
+      <li>IKEEP Intrapreneurship Programme — Innovation Management (certification).</li>
+      <li>Builds personal projects in spare time; picks up new languages and tools quickly; uses AI coding tools day-to-day to develop and debug faster.</li>
+    </ul>
+  </section>
 </BaseLayout>
+
+<style>
+  .cv-head { margin-bottom: 1.5rem; }
+  .cv-head h1 { margin-bottom: 0.25rem; }
+  .contact { color: #555; font-size: 0.9rem; margin: 0 0 0.75rem; }
+  .contact a { color: #0076ff; text-decoration: none; }
+  .contact a:hover { text-decoration: underline; }
+
+  .download {
+    display: inline-block;
+    background: #0076ff;
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.85rem;
+    padding: 0.4rem 0.9rem;
+    border-radius: 6px;
+  }
+  .download:hover { background: #005fcc; }
+
+  section { margin-top: 2rem; }
+  section h2 {
+    font-size: 1.1rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.3rem;
+    margin-bottom: 1rem;
+  }
+
+  .entry { margin-bottom: 1.25rem; }
+  .entry h3 { margin: 0 0 0.2rem; font-size: 1rem; }
+  .entry h3 a { color: inherit; text-decoration: none; }
+  .entry h3 a:hover { color: #0076ff; }
+  .meta { color: #666; font-size: 0.85rem; margin: 0 0 0.4rem; }
+  .entry p:last-child { margin: 0; }
+
+  .skills { margin: 0; }
+  .skill-row { display: flex; gap: 1rem; margin-bottom: 0.6rem; }
+  .skill-row dt { flex: 0 0 11rem; font-weight: 600; }
+  .skill-row dd { margin: 0; color: #333; }
+
+  @media (max-width: 600px) {
+    .skill-row { flex-direction: column; gap: 0.1rem; }
+    .skill-row dt { flex-basis: auto; }
+  }
+
+  @media print {
+    .download { display: none; }
+  }
+</style>

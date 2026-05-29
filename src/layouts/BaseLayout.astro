@@ -2,8 +2,6 @@
 // src/layouts/BaseLayout.astro
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
-
-// Component Props: allows pages using this layout to pass a custom title
 const { title = "My Personal Website" } = Astro.props;
 ---
 
@@ -14,29 +12,59 @@ const { title = "My Personal Website" } = Astro.props;
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <title>{title}</title>
+
+  <!-- Set the theme BEFORE the page paints, so there's no flash of the wrong
+       colours on load. is:inline stops Astro bundling/deferring it. -->
+  <script is:inline>
+    const stored = localStorage.getItem('theme');
+    const theme = stored ?? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    document.documentElement.dataset.theme = theme;
+  </script>
 </head>
 <body>
   <div class="site-container">
     <Nav />
-    
-    <main>
-      <slot /> 
-    </main>
-    
+    <main><slot /></main>
     <Footer />
   </div>
 </body>
 </html>
 
 <style is:global>
+  /* Light theme (default) */
+  :root {
+    --bg: #fafafa;
+    --surface: #ffffff;
+    --text: #222222;
+    --text-muted: #666666;
+    --border: #eeeeee;
+    --accent: #0076ff;
+    --accent-hover: #005fcc;
+    --tag-bg: #eef2f7;
+    --tag-text: #334155;
+  }
+  /* Dark theme — applied when <html data-theme="dark"> */
+  :root[data-theme="dark"] {
+    --bg: #0f1115;
+    --surface: #181b21;
+    --text: #e9eaec;
+    --text-muted: #9aa0a8;
+    --border: #2a2e36;
+    --accent: #4d9fff;
+    --accent-hover: #7bb6ff;
+    --tag-bg: #23272f;
+    --tag-text: #cdd3db;
+  }
+
   html, body {
     margin: 0;
     padding: 0;
     font-family: system-ui, sans-serif;
-    background-color: #fafafa;
-    color: #222;
+    background-color: var(--bg);
+    color: var(--text);
   }
-  
+  body { transition: background-color 0.2s ease, color 0.2s ease; }
+
   .site-container {
     display: flex;
     flex-direction: column;
@@ -45,9 +73,11 @@ const { title = "My Personal Website" } = Astro.props;
     margin: 0 auto;
     padding: 0 1rem;
   }
+  main { flex: 1; padding: 2rem 0; }
 
-  main {
-    flex: 1;
-    padding: 2rem 0;
-  }
+  /* Theme-driven icon swap (global, so no scope-hash issues) */
+  .icon-moon { display: block; }
+  .icon-sun { display: none; }
+  html[data-theme="dark"] .icon-moon { display: none; }
+  html[data-theme="dark"] .icon-sun { display: block; }
 </style>

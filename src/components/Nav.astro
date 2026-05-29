@@ -2,25 +2,61 @@
 // src/components/Nav.astro
 ---
 <nav>
+  <div class="nav-left">
     <a href="/">Home</a>
     <a href="/cv">CV</a>
     <a href="/projects">Projects</a>
     <a href="/personal">Personal</a>
+  </div>
+
+  <div class="nav-right">
+
+    <button class="icon-link" id="theme-toggle" type="button" aria-label="Toggle dark mode">
+      <!-- Moon shows in light mode (click to go dark) -->
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <!-- Sun shows in dark mode (click to go light) -->
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+    </button>
+  </div>
 </nav>
 
 <style>
-    nav {
-        display: flex;
-        gap: 1.5rem;
-        padding: 1rem 0;
-        border-bottom: 1px solid #eee;
-    }
-    a {
-        text-decoration: none;
-        color: #333;
-        font-weight: 500;
-    }
-    a:hover {
-        color: #0076ff;
-    }
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-left { display: flex; gap: 1.5rem; }
+  .nav-left a {
+    text-decoration: none;
+    color: var(--text);
+    font-weight: 500;
+  }
+  .nav-left a:hover { color: var(--accent); }
+
+  .nav-right { display: flex; align-items: center; gap: 1rem; }
+
+  .icon-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: var(--text-muted);
+  }
+  .icon-link:hover { color: var(--accent); }
+  .icon-link svg { width: 20px; height: 20px; }
 </style>
+
+<script>
+  const btn = document.getElementById('theme-toggle');
+  btn?.addEventListener('click', () => {
+    const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = next;
+    localStorage.setItem('theme', next);   // remembers the choice across visits
+  });
+</script>
