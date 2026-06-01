@@ -4,7 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 // The bio lives here as real text — it's the SEO/no-JS fallback.
 // The script below re-streams it for the "LLM output" effect.
-const bio = "Final-year BSc Computer Science student at the University of Surrey, predicted First Class and graduating July 2026. I train cooperative multi-agent AI, fine-tune and evaluate large language models, build full-stack applications, and run a home server I rebuilt from two broken laptops. Open to software engineering, AI and DevOps roles from September 2026.";
+const bio = "Final-year BSc Computer Science student at the University of Surrey, predicted First Class and graduating July 2026. I write full-stack code, train machine learning models, and host my projects on a home server I built out of two broken laptops. I am open to a wide variety of technical graduate roles from September 2026.";
 ---
 
 <BaseLayout title="Fred Kernot — CS · AI · Systems">
@@ -48,38 +48,43 @@ const bio = "Final-year BSc Computer Science student at the University of Surrey
   const statsEl = document.getElementById('stats');
   const tokEl = document.getElementById('tok');
 
-  const full = bioEl.textContent.trim();
-  // Treat each word as a pseudo-token for a plausible count.
-  const tokenCount = full.split(/\s+/).length;
-  tokEl.textContent = tokenCount + ' tokens';
+  if (bioEl && statsEl && tokEl) {
+    // The bio's full text is the SEO/no-JS fallback already in the HTML.
+    const full = (bioEl.textContent ?? '').trim();
+    const tokenCount = full.split(/\s+/).length;   // words as pseudo-tokens
+    tokEl.textContent = tokenCount + ' tokens';
 
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // Reveal the full text + stats instantly (used on finish, skip, or reduced motion).
-  function finish() {
-    bioEl.textContent = full;
-    statsEl.hidden = false;
-  }
+    const finish = () => {
+      bioEl.textContent = full;
+      statsEl.hidden = false;
+    };
 
-  if (reduceMotion) {
-    finish();
-  } else {
-    const words = full.split(' ');
-    bioEl.textContent = '';
-    bioEl.classList.add('typing');   // adds the blinking cursor via CSS
-    let i = 0;
-    const timer = setInterval(() => {
-      bioEl.textContent = words.slice(0, i + 1).join(' ');
-      i++;
-      if (i >= words.length) {
+    if (reduceMotion) {
+      finish();
+    } else {
+      const words = full.split(' ');
+      bioEl.textContent = '';
+      bioEl.classList.add('typing');
+      let i = 0;
+      const timer = setInterval(() => {
+        bioEl.textContent = words.slice(0, i + 1).join(' ');
+        i++;
+        if (i >= words.length) {
+          clearInterval(timer);
+          bioEl.classList.remove('typing');
+          statsEl.hidden = false;
+        }
+      }, 55);
+
+      // Click the bio to skip to the end.
+      bioEl.addEventListener('click', () => {
         clearInterval(timer);
         bioEl.classList.remove('typing');
-        statsEl.hidden = false;
-      }
-    }, 55);
-
-    // Click anywhere on the bio to skip to the end.
-    bioEl.addEventListener('click', () => { clearInterval(timer); bioEl.classList.remove('typing'); finish(); });
+        finish();
+      });
+    }
   }
 </script>
 

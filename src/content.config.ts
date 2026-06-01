@@ -13,8 +13,8 @@ const projects = defineCollection({
     description: z.string(),        // required one-liner for the card
     date: z.coerce.date(),          // see note below on `coerce`
     tech: z.array(z.string()),      // a list of strings, e.g. ["Docker", "Proxmox"]
+    category: z.enum(['AI','Systems','Web','Data']), 
   }),
 });
-
 
 export const collections = { projects };

@@ -7,6 +7,7 @@ tech:
   - Docker
   - SSH
   - Ollama
+category: Systems
 ---
 
 ## Overview
