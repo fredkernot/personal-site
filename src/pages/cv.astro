@@ -16,32 +16,37 @@ const skillGroups = [
 const projects = [
   {
     title: "Adversarial Reinforcement Learning for Cooperative AI — Dissertation",
+    href: "/projects/adversarial-rl",
     stack: "Python · PyTorch · Stable-Baselines3 · Gymnasium · Overcooked-AI",
     desc: "Built a three-stage co-evolutionary RL pipeline (40M timesteps) training cooperative agents to stay effective alongside imperfect or adversarial partners in Overcooked-AI. Evaluated across three seeds with a compute-matched ablation study, quantifying a 2–3× improvement over the self-play baseline and isolating which stages drove the gains.",
   },
   {
     title: "LLM Optimisation & Evaluation",
+    href: "/projects/llm-optimisation",
     stack: "Python · HuggingFace · NSGA-II · LoRA · GPU (A100)",
     desc: "Implemented NSGA-II for multi-objective hyperparameter optimisation of an LLM, balancing validation accuracy against trainable parameter count. Analysed the resulting Pareto front to find a deployment configuration that cut parameters by 55.5% with matched accuracy.",
   },
   {
     title: "Assistive AI for Visually Impaired Users",
+    href: "/projects/assistive-ai",
     stack: "Python · YOLO11 · Depth Anything V2 · Computer Vision · COCO",
     desc: "Prototype assistive-vision system that processes camera or webcam frames through a multi-stage pipeline: detects accessibility-relevant objects with a fine-tuned YOLO11 model, estimates proximity with Depth Anything V2, scores risk, and outputs text-to-speech alerts plus annotated logs. Configurable via YAML, with evaluation scripts benchmarking model sizes on COCO and custom obstacle datasets.",
   },
   {
     title: "Conversational Crime Data Platform",
+    href: "/projects/crime-rag",
     stack: "Python · pandas · Ollama · Local LLMs",
     desc: "Local RAG tool that melts and pre-aggregates large public London crime datasets with pandas to make lookups near-constant-time. Cut local-LLM hallucinations during conversational retrieval through regex-based entity extraction and precise context prompting.",
   },
   {
     title: "Accessible Cybersecurity Education Platform",
+    href: "/projects/cybersecurity-platform",
     stack: "Django · React · Docker · JWT · Agile",
     desc: "Led a 7-person Agile team to design, build and deploy a containerised e-learning platform, standardising Git workflows, group code reviews and automated testing. Built the React frontend with secure JWT auth and RESTful endpoints, and accessible high-contrast UIs tailored to an elderly demographic.",
   },
   {
     title: "Home Server & Automation",
-    href: "/projects/home-server",        
+    href: "/projects/home-server",
     stack: "Linux · Docker · SSH · CI/CD concepts",
     desc: "Rebuilt one working machine from two scrap HP laptops, installed Linux Mint, and run it as a headless, Docker-based home server over SSH. Full setup documented as a rebuild/recovery runbook, including a layer-by-layer network debugging write-up.",
   },

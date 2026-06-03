@@ -12,7 +12,9 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@fontsource-variable/jetbrains-mono": "^5.2.8",
     "astro": "^6.3.8",
+    "rehype-external-links": "^3.0.0",
     "three": "^0.184.0"
   },
   "devDependencies": {

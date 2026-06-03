@@ -2,6 +2,7 @@
 // src/layouts/BaseLayout.astro
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import '@fontsource-variable/jetbrains-mono';
 const { title = "My Personal Website" } = Astro.props;
 ---
 
@@ -80,4 +81,12 @@ const { title = "My Personal Website" } = Astro.props;
   .icon-sun { display: none; }
   html[data-theme="dark"] .icon-moon { display: none; }
   html[data-theme="dark"] .icon-sun { display: block; }
+
+    html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'JetBrains Mono Variable', monospace;
+    background-color: var(--bg);
+    color: var(--text);
+  }
 </style>
