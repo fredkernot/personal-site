@@ -25,7 +25,7 @@ const graphNodes = projects.map((p) => ({
 
 <BaseLayout title="Projects | Fred Kernot">
   <h1>Projects</h1>
-  <p class="intro">A similarity map of my projects: the more two share a tech stack, the closer they sit. Drag to rotate, zoom in, and click a point to open it.</p>
+  <p class="intro">A similarity map of my projects: projects of similar tech stacks are positioned close together. Drag to rotate, zoom in, and click a point to open it.</p>
 
   <div id="graph" class="graph" aria-hidden="true">
     <button id="names-toggle" class="names-toggle" type="button">Show Names</button>
@@ -297,6 +297,7 @@ const graphNodes = projects.map((p) => ({
     top: 8px;
     right: 8px;
     z-index: 2;
+    font-family: inherit;
     font-size: 12px;
     padding: 4px 10px;
     border: 1px solid var(--border);

@@ -1,10 +1,39 @@
 ---
 // src/pages/personal.astro
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
+import kilimanjaro from '../assets/kilimanjaro.jpeg';
 ---
 
 <BaseLayout title="Personal | Fred Kernot">
-  <h1>Personal Space</h1>
-  <p>This is where other achievements will live that don't relate to specifically to coding.</p>
-  <p><em>Stub page - content coming soon!</em></p>
+  <h1>Personal</h1>
+  <p class="intro">A bit of life beyond the code. More to come.</p>
+
+  <figure class="photo">
+    <Image src={kilimanjaro} alt="Me at the summit of Mount Kilimanjaro" />
+    <figcaption>At the summit of Mount Kilimanjaro (5,895 m), 1st September 2025.</figcaption>
+  </figure>
 </BaseLayout>
+
+<style>
+  .intro { color: var(--text-muted); margin: 0 0 2rem; }
+
+  .photo { 
+    max-width: 600px;
+    margin: 0 auto;
+    
+  }
+  .photo img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  figcaption {
+    margin-top: 0.6rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-align: center;
+  }
+</style>

@@ -10,6 +10,12 @@ tech:
 category: AI
 ---
 
+I used NSGA-II to run multi-objective hyperparameter optimisation over an LLM, balancing validation accuracy against the number of trainable parameters. The resulting Pareto front shows the trade-off:
+
+![Pareto front of validation accuracy against trainable parameters](../../assets/pareto-front.png)
+
+*The chosen configuration cuts trainable parameters by 55.5% while holding validation accuracy level with the full model.*
+
 ## Finding a cheaper LoRA configuration with NSGA-II
 This multi-objective hyperparameter search found a LoRA configuration running at roughly 45% of the size of the peak model while maintaining 99% of its accuracy. 
 
@@ -26,8 +32,7 @@ I set up the search to minimise both the error rate and the number of trainable 
 
 ## Results
 
-(pareto-front image)
-(table of results?)
+
 The search revealed two clear insights about parameter efficiency. First, adapting the feedforward layers buys the most accuracy, as every solution above 90% targets both attention and feedforward modules. Second, LoRA rank has sharp diminishing returns, so doubling the rank from 8 to 16 adds over 500k parameters for a negligible 0.1% accuracy gain.
 The best configuration for actual deployment is the knee point of the curve. This solution achieves 91.2% accuracy with only 724,230 parameters. A standard single-objective search would have discarded this option, but it is the smarter choice for a memory-constrained environment.
 
@@ -36,4 +41,5 @@ If I were to continue this work, I would run the search with a larger population
 
 ## Links and tools
 •	GitHub Repository: [nsga-II_hyperparameter_optimisation](https://github.com/fredkernot/nsga-II_hyperparameter_optimisation)
+
 •	Tech Stack: Python, PyTorch, Hugging Face Transformers, PEFT, Datasets, DEAP, scikit-learn, Matplotlib
